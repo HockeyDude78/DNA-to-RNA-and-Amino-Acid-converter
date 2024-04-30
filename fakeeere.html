@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DNA to RNA and Amino Acid Translator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DNA to RNA and Amino Acid Translator</h1>
+        <label for="dnaInput">Enter DNA sequence:</label>
+        <input type="text" id="dnaInput" placeholder="e.g., GATTACA">
+        <button onclick="translateDNA()">Translate</button>
+        <h2>RNA Sequence:</h2>
+        <p id="rnaOutput"></p>
+        <h2>Amino Acids:</h2>
+        <p id="aminoAcidsOutput"></p>
+    </div>
+
+    <script>
+      const aminoAcidTable = {
+        'UUU': 'Phe', 'UCU': 'Ser', 'UAU': 'Tyr', 'UGU': 'Cys',
+        'UUC': 'Phe', 'UCC': 'Ser', 'UAC': 'Tyr', 'UGC': 'Cys',
+        'UUA': 'Leu', 'UCA': 'Ser', 'UAA': 'Stop', 'UGA': 'Stop',
+        'UUG': 'Leu', 'UCG': 'Ser', 'UAG': 'Stop', 'UGG': 'Trp',
+
+        'CUU': 'Leu', 'CCU': 'Pro', 'CAU': 'His', 'CGU': 'Arg',
+        'CUC': 'Leu', 'CCC': 'Pro', 'CAC': 'His', 'CGC': 'Arg',
+        'CUA': 'Leu', 'CCA': 'Pro', 'CAA': 'Gln', 'CGA': 'Arg',
+        'CUG': 'Leu', 'CCG': 'Pro', 'CAG': 'Gln', 'CGG': 'Arg',
+
+        'AUU': 'Ile', 'ACU': 'Thr', 'AAU': 'Asn', 'AGU': 'Ser',
+        'AUC': 'Ile', 'ACC': 'Thr', 'AAC': 'Asn', 'AGC': 'Ser',
+        'AUA': 'Ile', 'ACA': 'Thr', 'AAA': 'Lys', 'AGA': 'Arg',
+        'AUG': 'Met', 'ACG': 'Thr', 'AAG': 'Lys', 'AGG': 'Arg',
+
+        'GUU': 'Val', 'GCU': 'Ala', 'GAU': 'Asp', 'GGU': 'Gly',
+        'GUC': 'Val', 'GCC': 'Ala', 'GAC': 'Asp', 'GGC': 'Gly',
+        'GUA': 'Val', 'GCA': 'Ala', 'GAA': 'Glu', 'GGA': 'Gly',
+        'GUG': 'Val', 'GCG': 'Ala', 'GAG': 'Glu', 'GGG': 'Gly'
+      };
+
+      function translateDNA() {
+        const dnaInput = document.getElementById('dnaInput').value.toUpperCase();
+        let rnaSequence = '';
+        let aminoAcids = '';
+
+        // Translate DNA to RNA
+        for (const nucleotide of dnaInput) {
+          switch (nucleotide) {
+            case 'C': rnaSequence += 'G'; break;
+            case 'G': rnaSequence += 'C'; break;
+            case 'A': rnaSequence += 'U'; break;
+            case 'T': rnaSequence += 'A'; break;
+            default: continue; // Ignore other letters
+          }
+        }
+
+        // Translate RNA to Amino Acids
+        for (let i = 0; i < rnaSequence.length; i += 3) {
+          const codon = rnaSequence.substring(i, i + 3);
+          if (codon.length === 3 && aminoAcidTable[codon]) {
+            aminoAcids += aminoAcidTable[codon] + ' ';
+          }
+        }
+
+        document.getElementById('rnaOutput').textContent = rnaSequence;
+        document.getElementById('aminoAcidsOutput').textContent = aminoAcids.trim();
+      }
+    </script>
+</body>
+</html>
+
